@@ -63,7 +63,7 @@ public class XpresswayLoginPage {
 		WebElement submit=driver.findElement(By.id("guideContainer-rootPanel-panel_1995127749_cop-panel-panel_1370118956-panel-panel_1152171751-panel_295710100-guidebutton_12616455___widget"));
 		submit.click();
 //Scenario: Lets wait for 35 second for the timer to complete
-		Thread.sleep(38000);
+		Thread.sleep(33000);
 //Now enter first otp --(here in uat to test i am entering wrong otp)
 //		WebElement otpSecondTime= driver.findElement(By.xpath("//input[@name='guideContainer-rootPanel-panel_1995127749_cop-panel-panel_1370118956-panel-panel_1152171751-panel_2079927398_cop-panel-guidetextbox___jqName']"));
 //		otpSecondTime.sendKeys("457890");

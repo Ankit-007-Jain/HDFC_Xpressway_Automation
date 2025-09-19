@@ -147,7 +147,7 @@ public class ProductsPage01 {
  
  ////////////////////////////////////////////////////////////////////////////////////////////////////////
  
- //To validate Apply Online section and clicking FastTag offer
+ //To validate Apply Online section
  
  WebElement applyOnline= driver.findElement(By.xpath("//*[@id=\"guideContainer-rootPanel-panel_1995127749_cop-panel_1128491847-panel_1476744642-panel-panel_897830868_copy-panel_897830868_copy-guidetextdraw_57070726__\"]/p"));
  Actions applyOnline01 = new Actions(driver);
@@ -159,7 +159,7 @@ public class ProductsPage01 {
 	} else {
 	    System.out.println("Validate: Apply Online section not visible:: Fail");
 	}
- 
+////////////////////////////////////////////////////////////////////////////////////////////////////// 
  // Clicking the FASTag offer
    WebElement fastTag = driver.findElement(By.xpath("//p[contains(text(),'FASTag')]"));
 if(fastTag.isDisplayed())
@@ -173,21 +173,24 @@ if(fastTag.isDisplayed())
     // specified text you located
     WebElement fastagCTA = driver.findElement(By.xpath("//p[contains(text(),'FASTag')]/following::a[1]"));
     // Click the button
-    fastagCTA.click();   
-    Thread.sleep(8000); // Wait for redirect
-            
+    fastagCTA.click(); 
+    Thread.sleep(10000);            
 //Post click it will redirect to another tab, so we have to use method getWindowHandle();
-
-ArrayList<String> anotherTab=new ArrayList<>(driver.getWindowHandles()); //Creating ArrayList<string> and storing all tabs in that
+    ArrayList<String> anotherTab=new ArrayList<>(driver.getWindowHandles()); //Creating ArrayList<string> and storing all tabs in that
+    driver.switchTo().window(anotherTab.get(1));
 
 //Now use index for specific tab; so overhere it will go to SSO url page, 
-driver.switchTo().window(tabs.get(0));
+
 System.out.println("Validation: FASTag offer CTA redirection:: Pass");
-Thread.sleep(2000); 
+Thread.sleep(5000); 
 }
 else {
-	 System.out.println("Validation: FASTag offer is NOT visible on the page");
+	 System.out.println("Validation: FASTag offer is NOT visible on the page:: Fail");
 }
+
+driver.close();
+Thread.sleep(2000);
+driver.switchTo().window(tabs.get(0)); //tabs.get(0):: what we fixed for the first window above
 //Scrolling on top of the page
 
 JavascriptExecutor js1 = (JavascriptExecutor) driver;
@@ -202,6 +205,7 @@ Thread.sleep(2000);
   //This above line will scroll on extreme top of the page if "To Top" CTA is not present,you can use this line of code
 //      Thread.sleep(4000);
        services.click();
+       System.out.println("Services_Page Validation:: Able to Navigate Service Tab:: True");
       Thread.sleep(3000);
      
 	 return driver;
