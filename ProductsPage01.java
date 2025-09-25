@@ -22,6 +22,7 @@ public class ProductsPage01 {
         Thread.sleep(3000); 
         System.out.println("<<<<<<<<<<<<<<<<<PRODUCTS_PAGE VALIDATION>>>>>>>>>>>>>>>>>");
 //Validate: User is NTB or ETB
+       try { 
        WebElement heading= driver.findElement(By.xpath("//*[@id='guideContainer-rootPanel-panel_1995127749_cop-panel_1128491847-panel_copy_copy_copy-guidetextdraw_601767___guide-item']"));
    
         String headingText= heading.getText();
@@ -34,6 +35,13 @@ public class ProductsPage01 {
         	System.out.println("User Validation:: Existing To Bank (ETB) user");
         }
         Thread.sleep(2000);
+       }
+       catch(Exception e)
+       {
+    	   System.out.println("User Validation:: Heading element not found on the page");
+       }
+ ///////////////////////////////////////////////////////////////////////////////////////////////
+ 
 //    To validate newly added festive logo
         WebElement festiveLogo= driver.findElement(By.xpath("//*[@class='cmp-logo-link']"));
        if (festiveLogo.isDisplayed())
@@ -49,6 +57,7 @@ public class ProductsPage01 {
   //Testing SSO: FD using Funds from HDFC Bank 
        
     // Locate heading by text
+       try {
        WebElement heading01 = driver.findElement(By.xpath("//p[contains(text(),'Fixed Deposit using Funds from HDFC Bank')]"));
 
        // Move to the heading
@@ -82,15 +91,21 @@ public class ProductsPage01 {
             driver.close();
             driver.switchTo().window(tabs.get(0)); //Again it will redirect to Home page(Offers Screen)
             Thread.sleep(5000);
+       }  
+       catch(Exception e)
+       {
+    	   System.out.println("To Validate::Fixed Deposit using Funds from HDFC Bank offer is not visible ::Fail ");
+       }
+            
   /////////////////////////////////////////////////////////////////////////////////
   
             //Testing SSO: Credit Card Application
-            //Locating by text
+try {
                WebElement heading02 = driver.findElement(By.xpath("//p[contains(text(),'Credit Card Application')]"));
 
                // Move to the heading
                Actions actions1 = new Actions(driver);
-               actions.moveToElement(heading02).perform();
+               actions1.moveToElement(heading02).perform();
                Thread.sleep(2000);
                
            //Now, below locator will click the Button next to the text; means it will click the button which is next to the
@@ -113,12 +128,17 @@ public class ProductsPage01 {
                         System.out.println("SSO Validation: Credit Card Application SSO Test:: Pass");
                     } else 
                     {
-                        System.out.println("SSO Validation: Credit Card Application SSO Test: Fail. Correct URL should be:: " + actualSSOUrl);
+                        System.out.println("SSO Validation: Credit Card Application SSO Test: Fail. Correct URL should be:: " + actualSSOUrl01);
                     }
                     Thread.sleep(10000);
                    driver.close();
-                   driver.switchTo().window(tabs.get(0)); //Again it will redirect to Home page(Offers Screen)
-                    Thread.sleep(2000);
+                   driver.switchTo().window(tabs02.get(0)); //Again it will redirect to Home page(Offers Screen)
+                   Thread.sleep(2000);
+}
+catch(Exception e)
+{
+	System.out.println("To Validate:: Credit Card Application offer is not visible");
+}
     //Scrolling on top of the page                
                    
             
@@ -153,7 +173,7 @@ public class ProductsPage01 {
  
  WebElement applyOnline= driver.findElement(By.xpath("//*[@id=\"guideContainer-rootPanel-panel_1995127749_cop-panel_1128491847-panel_1476744642-panel-panel_897830868_copy-panel_897830868_copy-guidetextdraw_57070726__\"]/p"));
  Actions applyOnline01 = new Actions(driver);
- actions.moveToElement(applyOnline).perform();
+ applyOnline01.moveToElement(applyOnline).perform();
  Thread.sleep(3000);
  
  if (applyOnline.isDisplayed()) {
@@ -200,7 +220,7 @@ public class ProductsPage01 {
 		 	System.out.println("To Validate: FASTag offer is NOT visible on the page:: Fail");
 	}
 Thread.sleep(2000);
-driver.switchTo().window(tabs.get(0)); //tabs.get(0):: what we fixed for the first window above
+//driver.switchTo().window(anotherTab.get(0)); //tabs.get(0):: what we fixed for the first window above
 //Scrolling on top of the page
 
 JavascriptExecutor js1 = (JavascriptExecutor) driver;

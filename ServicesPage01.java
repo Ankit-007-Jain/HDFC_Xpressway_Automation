@@ -23,15 +23,8 @@ public class ServicesPage01 {
 		Thread.sleep(3000);
 		System.out.println("<<<<<<<<<<<<<<<<<SERVICES_PAGE VALIDATION>>>>>>>>>>>>>>>>>");
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//		//Navigating to PanUpdation page
-//		List<WebElement> servicesOffersList = driver.findElements(By.xpath("//a[@class='xpressway_imagewithtext_rightSection-cta']/p"));
-//		WebElement panUpdation= servicesOffersList.get(18);
-//		Actions panUpdationText= new Actions(driver);
-//		panUpdationText.moveToElement(panUpdation).build().perform();
-//		Thread.sleep(4000);
-//		panUpdation.click();
-//		Thread.sleep(9000);
-		
+	//Navigating to PanUpdation page
+		try {
 		 WebElement panUpdation = driver.findElement(By.xpath("//p[contains(text(),'PAN Updation')]"));
 //Defining outside if else statement so i can use it throughout my code		
 		 ArrayList<String> tabs03=null;
@@ -51,9 +44,6 @@ public class ServicesPage01 {
 		     tabs03= new ArrayList<String>(driver.getWindowHandles());
 		     driver.switchTo().window(tabs03.get(1));
 		     Thread.sleep(10000); 
-			
-	//	ArrayList<String> tabs03= new ArrayList<String>(driver.getWindowHandles());
-	//	driver.switchTo().window(tabs03.get(1));
 		 
 //Validate: LGCODE AND LCCODE IN THE URL
 		String actualURL=driver.getCurrentUrl();
@@ -75,6 +65,11 @@ public class ServicesPage01 {
 		tabs03= new ArrayList<String>(driver.getWindowHandles());
 		driver.switchTo().window(tabs03.get(0));
 		Thread.sleep(4000);
+		}
+		catch(Exception e)
+		{
+			System.out.println("Pan Updation service is not visible on screen");
+		}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////		
 	//	To scroll back to the top of the page
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -94,6 +89,8 @@ public class ServicesPage01 {
 		}
 
 		//	Clicking Whatsapp CTA
+		try {
+		
 		WebElement whatsappCTA = driver.findElement(By.xpath("//*[@id=\"guideContainer-rootPanel-panel_1995127749_cop-panel_1128491847-panel_1476744642-panel_1876474291-panel_1430560025-panel_2108029993-imagewithtext_151866___guide-item\"]/div/div/div/div/div[2]/a/p"));
 		Thread.sleep(2000);
 		Actions action =new Actions(driver);
@@ -116,6 +113,11 @@ public class ServicesPage01 {
 		  driver.close();
 		  Thread.sleep(4000);
 		  driver.switchTo().window(tabs1.get(0));
+		}
+		catch(Exception e)
+		{
+			System.out.println("To Validate:: Whatsapp service is not visible");
+		}
 	//Clicking on To Top cta	
 		Thread.sleep(3000);
 		WebElement toTopCTA = driver.findElement(By.xpath("//*[@class='scrolltotop_desktop']"));

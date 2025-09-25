@@ -7,7 +7,7 @@ public class MainMethod {
 		 DigitalPlatformPage01 digit=new DigitalPlatformPage01();
 		WebDriver driver=digit.digital();
 		Thread.sleep(3000);
-		//driver.close();
+		driver.close();
 	}
 }
 

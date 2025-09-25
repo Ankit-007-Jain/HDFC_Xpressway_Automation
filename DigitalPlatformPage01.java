@@ -2,6 +2,8 @@ package xpressway_HDFC_Prod;
 
 import java.util.ArrayList;
 
+import javax.swing.text.TabableView;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +24,8 @@ public class DigitalPlatformPage01 {
 		Thread.sleep(3000);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //Validating HDFC SKY navigation
+		try {
+			
 	WebElement hdfcSkyCTA=driver.findElement(By.xpath("//*[text()='HDFC Sky']"));
 	Thread.sleep(2000);
 //	Actions action=new Actions(driver);
@@ -43,6 +47,11 @@ public class DigitalPlatformPage01 {
 	    }
 	driver.close();
 	driver.switchTo().window(tab.get(0));
+		}
+		catch(Exception e)
+		{
+			System.out.println("To Validate:: HDFC SKY service is not visible:: Fail");
+		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //CLICKING OFFERS
 	
@@ -54,12 +63,16 @@ if(offers.isDisplayed())
 	offers.click();
 	System.out.println("Offers redirection is working: Pass");
 	Thread.sleep(6000);
-	driver.close();
+	//driver.close();
 }
 else {
 	System.out.println("Offers redirection is not working: Fail");
 }
-Thread.sleep(4000);
+ArrayList<String> offersTab=new ArrayList<String>(driver.getWindowHandles());
+driver.switchTo().window(offersTab.get(1));
+driver.close();
+driver.switchTo().window(offersTab.get(0));
+Thread.sleep(3000);
 driver.close();
 //write all digital platform functionalities
 //lets consider this final tab/class and next lets create main method and call DigitalPlatform class	
