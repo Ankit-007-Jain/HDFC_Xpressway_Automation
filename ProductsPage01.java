@@ -19,17 +19,18 @@ public class ProductsPage01 {
 
       XpresswayLoginPage loginPage = new XpresswayLoginPage(); // Calling class creating "loginPage" object
        WebDriver driver = loginPage.login(); // calling method of previous code
-        Thread.sleep(2000); 
+        Thread.sleep(3000); 
+        System.out.println("<<<<<<<<<<<<<<<<<PRODUCTS_PAGE VALIDATION>>>>>>>>>>>>>>>>>");
 //Validate: User is NTB or ETB
         WebElement heading= driver.findElement(By.xpath("//*[@id='guideContainer-rootPanel-panel_1995127749_cop-panel_1128491847-panel_copy_copy_copy-guidetextdraw_601767___guide-item']"));
         String headingText= heading.getText();
         if(headingText.contains("Dear Customer"))
         {
-        	System.out.println("User Validation:: New To Bank (NTB)");
+        	System.out.println("User Validation:: New To Bank (NTB) user");
         }
         else
         {
-        	System.out.println("User Validation:: Existing To Bank (ETB)");
+        	System.out.println("User Validation:: Existing To Bank (ETB) user");
         }
         Thread.sleep(2000);
 //    To validate newly added festive logo
@@ -155,9 +156,9 @@ public class ProductsPage01 {
  Thread.sleep(3000);
  
  if (applyOnline.isDisplayed()) {
-	    System.out.println("Validate: Apply Online section visible:: Pass");
+	    System.out.println("To Validate: Apply Online section visible:: Pass");
 	} else {
-	    System.out.println("Validate: Apply Online section not visible:: Fail");
+	    System.out.println("To Validate: Apply Online section not visible:: Fail");
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////// 
  // Clicking the FASTag offer
@@ -178,14 +179,21 @@ if(fastTag.isDisplayed())
 //Post click it will redirect to another tab, so we have to use method getWindowHandle();
     ArrayList<String> anotherTab=new ArrayList<>(driver.getWindowHandles()); //Creating ArrayList<string> and storing all tabs in that
     driver.switchTo().window(anotherTab.get(1));
+    
+    	String currentUrl = driver.getCurrentUrl();
+    
+    // Check if the URL contains LCCode=7738&LGCode=AYUS12
+    if (currentUrl.contains("LCCode=7738&LGCode=AYUS12")) {
+        System.out.println("To Validate: FASTag URL Contains LG and LC code:: Pass");
+    } else {
+        System.out.println("To Validate: FASTag URL Does Not Contain LG and LC code:: Fail");
+    }
 
-//Now use index for specific tab; so overhere it will go to SSO url page, 
-
-System.out.println("Validation: FASTag offer CTA redirection:: Pass");
-Thread.sleep(5000); 
+//System.out.println("To Validate: FASTag offer CTA redirection:: Pass");
+//Thread.sleep(5000); 
 }
 else {
-	 System.out.println("Validation: FASTag offer is NOT visible on the page:: Fail");
+	 System.out.println("To Validate: FASTag offer is NOT visible on the page:: Fail");
 }
 
 driver.close();
@@ -205,7 +213,7 @@ Thread.sleep(2000);
   //This above line will scroll on extreme top of the page if "To Top" CTA is not present,you can use this line of code
 //      Thread.sleep(4000);
        services.click();
-       System.out.println("Services_Page Validation:: Able to Navigate Service Tab:: True");
+       System.out.println("To Validate Services tab navigation:: Able to Navigate Service Tab:: Pass");
       Thread.sleep(3000);
      
 	 return driver;

@@ -21,33 +21,59 @@ public class ServicesPage01 {
 		ProductsPage01 homey=new ProductsPage01(); //calling previous tab class
 		WebDriver driver=homey.homepage(); //calling method from created object
 		Thread.sleep(3000);
+		System.out.println("<<<<<<<<<<<<<<<<<SERVICES_PAGE VALIDATION>>>>>>>>>>>>>>>>>");
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		//Navigating to PanUpdation page
-		List<WebElement> servicesOffersList = driver.findElements(By.xpath("//a[@class='xpressway_imagewithtext_rightSection-cta']/p"));
-		WebElement panUpdation= servicesOffersList.get(18);
-		Actions panUpdationText= new Actions(driver);
-		panUpdationText.moveToElement(panUpdation).build().perform();
-		Thread.sleep(4000);
-		panUpdation.click();
-		Thread.sleep(9000);
+//		//Navigating to PanUpdation page
+//		List<WebElement> servicesOffersList = driver.findElements(By.xpath("//a[@class='xpressway_imagewithtext_rightSection-cta']/p"));
+//		WebElement panUpdation= servicesOffersList.get(18);
+//		Actions panUpdationText= new Actions(driver);
+//		panUpdationText.moveToElement(panUpdation).build().perform();
+//		Thread.sleep(4000);
+//		panUpdation.click();
+//		Thread.sleep(9000);
+		
+		 WebElement panUpdation = driver.findElement(By.xpath("//p[contains(text(),'PAN Updation')]"));
+//Defining outside if else statement so i can use it throughout my code		
+		 ArrayList<String> tabs03=null;
+//Here setting value as null and in if else statement i will set the value
+		 if(panUpdation.isDisplayed())
+		 {
+		     // Move to the heading
+		     Actions fastTag01 = new Actions(driver);
+		     fastTag01.moveToElement(panUpdation).perform();
+		     Thread.sleep(2000);
+		     
+		 //Now, below locator will click the Button next to the text; means it will click the button which is next to the
+		     // specified text you located
+		     WebElement panUpdationCTA = driver.findElement(By.xpath("//p[contains(text(),'PAN Updation')]/following::a[1]"));
+		     // Click the button
+		     panUpdationCTA.click(); 
+		     tabs03= new ArrayList<String>(driver.getWindowHandles());
+		     driver.switchTo().window(tabs03.get(1));
+		     Thread.sleep(10000); 
 			
-		ArrayList<String> tabs= new ArrayList<String>(driver.getWindowHandles());
-		driver.switchTo().window(tabs.get(1));
+	//	ArrayList<String> tabs03= new ArrayList<String>(driver.getWindowHandles());
+	//	driver.switchTo().window(tabs03.get(1));
+		 
 //Validate: LGCODE AND LCCODE IN THE URL
 		String actualURL=driver.getCurrentUrl();
 		
-		if(actualURL.contains("LGCode=AYUS12") && actualURL.contains("LCCode=7738"))
+		if(actualURL.contains("LCCode=7738&LGCode=AYUS12"))
 		{
-			System.out.println("Validation: Pan Updation Service URL Link Contains LG and LC code:: Pass");
+			System.out.println("To Validate: Pan Updation Service URL Link Contains LG and LC code:: Pass");
 		}
 		else
 		{
-			System.out.println("Validation: Pan Updation Service URL Link does not contains LG and LC code:: Fail");
+			System.out.println("To Validate: Pan Updation Service URL Link does not contains LG and LC code:: Fail");
+		}}
+		else
+		{
+			System.out.println("To Validate: Pan Updation service is not visible: Fail");
 		}
 		Thread.sleep(3000);
 		driver.close();
-		
-		driver.switchTo().window(tabs.get(0));
+		tabs03= new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs03.get(0));
 		Thread.sleep(4000);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////		
 	//	To scroll back to the top of the page
@@ -59,12 +85,12 @@ public class ServicesPage01 {
 		WebElement explore= driver.findElement(By.id("guideContainer-rootPanel-panel_1995127749_cop-panel_1128491847-panel_1476744642-panel_1876474291-panel_606864485-guidebutton_12888279___widget"));
 		if(explore.isDisplayed())
 		{
-			System.out.println("Validation: Navigating to Explore Tab:: Pass");
+			System.out.println("To Validate: Navigating to Explore Tab:: Pass");
 			Thread.sleep(2000);
 			explore.click();
 		}
 		else {
-			System.out.println("Validation: Navigating to Explore Tab:: Fail");
+			System.out.println("To Validate: Navigating to Explore Tab:: Fail");
 		}
 
 		//	Clicking Whatsapp CTA
@@ -74,14 +100,21 @@ public class ServicesPage01 {
 		action.moveToElement(whatsappCTA).perform();
 		Thread.sleep(2000);
 		whatsappCTA.click();
-	System.out.println("Validation: Whatsapp function under Explore tab navigation is working:: Pass");
+	System.out.println("To Validate: Whatsapp function under Explore tab navigation is working:: Pass");
 		Thread.sleep(4000);
-	//Redirecting again to Services tab
+		
 		ArrayList<String> tabs1=new ArrayList<>(driver.getWindowHandles());  
 		  driver.switchTo().window(tabs1.get(1));
+		  String currentUrl02=driver.getCurrentUrl();
+				  
+		  if (currentUrl02.contains("LCCode=7738&LGCode=AYUS12")) {
+		        System.out.println("To Validate: Whatsapp URL Contains LG and LC code:: Pass");
+		    } else {
+		        System.out.println("To Validate: Whatsapp URL Does Not Contain LG and LC code:: Fail");
+		    }
 		  Thread.sleep(5000);
 		  driver.close();
-		  Thread.sleep(1000);
+		  Thread.sleep(4000);
 		  driver.switchTo().window(tabs1.get(0));
 	//Clicking on To Top cta	
 		Thread.sleep(3000);
@@ -90,13 +123,13 @@ public class ServicesPage01 {
 		{
 			toTopCTA.click();
 			Thread.sleep(1000);
-			System.out.println("Validation: To Top CTA under Explore tab is Working :: Pass");
+			System.out.println("To Validate: To Top CTA under Explore tab is Working :: Pass");
 		}
 		else {
-			System.out.println("Validation: To Top CTA under Explore tab is Working :: Fail");
+			System.out.println("To Validate: To Top CTA under Explore tab is Working :: Fail");
 		}
 		Thread.sleep(2000);
 		return driver;		
-	}
+		 }
 	}
 
