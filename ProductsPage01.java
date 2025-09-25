@@ -22,7 +22,8 @@ public class ProductsPage01 {
         Thread.sleep(3000); 
         System.out.println("<<<<<<<<<<<<<<<<<PRODUCTS_PAGE VALIDATION>>>>>>>>>>>>>>>>>");
 //Validate: User is NTB or ETB
-        WebElement heading= driver.findElement(By.xpath("//*[@id='guideContainer-rootPanel-panel_1995127749_cop-panel_1128491847-panel_copy_copy_copy-guidetextdraw_601767___guide-item']"));
+       WebElement heading= driver.findElement(By.xpath("//*[@id='guideContainer-rootPanel-panel_1995127749_cop-panel_1128491847-panel_copy_copy_copy-guidetextdraw_601767___guide-item']"));
+   
         String headingText= heading.getText();
         if(headingText.contains("Dear Customer"))
         {
@@ -162,41 +163,42 @@ public class ProductsPage01 {
 	}
 ////////////////////////////////////////////////////////////////////////////////////////////////////// 
  // Clicking the FASTag offer
-   WebElement fastTag = driver.findElement(By.xpath("//p[contains(text(),'FASTag')]"));
-if(fastTag.isDisplayed())
-{
-    // Move to the heading
-    Actions fastTag01 = new Actions(driver);
-    actions.moveToElement(fastTag).perform();
-    Thread.sleep(2000);
-    
-//Now, below locator will click the Button next to the text; means it will click the button which is next to the
-    // specified text you located
-    WebElement fastagCTA = driver.findElement(By.xpath("//p[contains(text(),'FASTag')]/following::a[1]"));
-    // Click the button
-    fastagCTA.click(); 
-    Thread.sleep(10000);            
-//Post click it will redirect to another tab, so we have to use method getWindowHandle();
-    ArrayList<String> anotherTab=new ArrayList<>(driver.getWindowHandles()); //Creating ArrayList<string> and storing all tabs in that
-    driver.switchTo().window(anotherTab.get(1));
-    
-    	String currentUrl = driver.getCurrentUrl();
-    
-    // Check if the URL contains LCCode=7738&LGCode=AYUS12
-    if (currentUrl.contains("LCCode=7738&LGCode=AYUS12")) {
-        System.out.println("To Validate: FASTag URL Contains LG and LC code:: Pass");
-    } else {
-        System.out.println("To Validate: FASTag URL Does Not Contain LG and LC code:: Fail");
-    }
+//  try is used to run code that might throw an error/exception
+ try {
+	    WebElement fastTag = driver.findElement(By.xpath("//p[contains(text(),'Naveen')]"));
+	    
+	    if (fastTag.isDisplayed()) {
+	        // Move to the heading
+	        Actions fastTag01 = new Actions(driver);
+	        fastTag01.moveToElement(fastTag).perform();
+	        Thread.sleep(2000);
 
-//System.out.println("To Validate: FASTag offer CTA redirection:: Pass");
-//Thread.sleep(5000); 
-}
-else {
-	 System.out.println("To Validate: FASTag offer is NOT visible on the page:: Fail");
-}
+	        // Now, below locator will click the Button next to the text
+	        WebElement fastagCTA = driver.findElement(By.xpath("//p[contains(text(),'FASTag')]/following::a[1]"));
+	        fastagCTA.click();
+	        Thread.sleep(10000);
 
-driver.close();
+	        // Post click it will redirect to another tab
+	        ArrayList<String> anotherTab = new ArrayList<>(driver.getWindowHandles());
+	        driver.switchTo().window(anotherTab.get(1));
+
+	        String currentUrl = driver.getCurrentUrl();
+
+	        // Check if the URL contains LCCode=7738&LGCode=AYUS12
+	        if (currentUrl.contains("LCCode=7738&LGCode=AYUS12")) {
+	            System.out.println("To Validate: FASTag URL Contains LG and LC code:: Pass");
+	        } else {
+	            System.out.println("To Validate: FASTag URL Does Not Contain LG and LC code:: Fail");
+	        }
+
+	        driver.close();
+	        driver.switchTo().window(anotherTab.get(0)); // switch back to home tab
+	    }
+	}
+//catch is used to handle that error so the program doesn’t stop
+	 catch (Exception e) {
+		 	System.out.println("To Validate: FASTag offer is NOT visible on the page:: Fail");
+	}
 Thread.sleep(2000);
 driver.switchTo().window(tabs.get(0)); //tabs.get(0):: what we fixed for the first window above
 //Scrolling on top of the page
