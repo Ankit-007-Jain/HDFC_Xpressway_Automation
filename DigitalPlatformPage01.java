@@ -26,31 +26,29 @@ public class DigitalPlatformPage01 {
 //Validating HDFC SKY navigation
 		try {
 			
-	WebElement hdfcSkyCTA=driver.findElement(By.xpath("//*[text()='HDFC Sky']"));
+	WebElement smartWealthCTA=driver.findElement(By.xpath("//*[text()='SmartWealth']"));
 	Thread.sleep(2000);
-//	Actions action=new Actions(driver);
-//	action.moveToElement(hdfcSkyCTA).build().perform();
+
 //To navigate to HDFCSky and clicking
-	((JavascriptExecutor) driver).executeScript("arguments[0].click();", hdfcSkyCTA);
-	Thread.sleep(3000);
+	((JavascriptExecutor) driver).executeScript("arguments[0].click();", smartWealthCTA);
+	Thread.sleep(8000);
 //	hdfcSkyCTA.click();
 	
 	ArrayList<String> tab= new ArrayList<String>(driver.getWindowHandles());
 	driver.switchTo().window(tab.get(1));
-	Thread.sleep(6000);
 	String currentUrl03=driver.getCurrentUrl();
-	if (currentUrl03.contains("LCCode=7738") && currentUrl03.contains("LGCode=AYUS12"))
+	if (currentUrl03.contains("LCCode=7738&LGCode=AYUS12"))
 	{
-	        System.out.println("To Validate: HDFC Sky URL Contains LG and LC code:: Pass");
+	        System.out.println("To Validate: Smart Wealth URL Contains LG and LC code:: Pass");
 	    } else {
-	        System.out.println("To Validate: HDFC Sky URL Does Not Contain LG and LC code:: Fail");
+	        System.out.println("To Validate: Smart Wealth URL Does Not Contain LG and LC code:: Fail");
 	    }
 	driver.close();
 	driver.switchTo().window(tab.get(0));
 		}
 		catch(Exception e)
 		{
-			System.out.println("To Validate:: HDFC SKY service is not visible:: Fail");
+			System.out.println("To Validate:: Smart Wealth service is not visible:: Fail");
 		}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //CLICKING OFFERS
@@ -61,12 +59,11 @@ WebElement offers=driver.findElement(By.xpath("//span[text()='Offers']"));
 if(offers.isDisplayed())
 {
 	offers.click();
-	System.out.println("Offers redirection is working: Pass");
+	System.out.println("To Validate:: Offers tab is redirecting: Pass");
 	Thread.sleep(6000);
-	//driver.close();
 }
 else {
-	System.out.println("Offers redirection is not working: Fail");
+	System.out.println("To Validate:: Offers tab is not redirecting: Fail");
 }
 ArrayList<String> offersTab=new ArrayList<String>(driver.getWindowHandles());
 driver.switchTo().window(offersTab.get(1));

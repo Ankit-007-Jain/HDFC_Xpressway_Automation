@@ -43,6 +43,7 @@ public class ProductsPage01 {
  ///////////////////////////////////////////////////////////////////////////////////////////////
  
 //    To validate newly added festive logo
+       try {
         WebElement festiveLogo= driver.findElement(By.xpath("//*[@class='cmp-logo-link']"));
        if (festiveLogo.isDisplayed())
        {
@@ -52,7 +53,11 @@ public class ProductsPage01 {
     	   System.out.println("To validate festive Logo:: It is not visible");
     	   
        }
-       Thread.sleep(3000);
+       Thread.sleep(3000);}
+       catch(Exception e)
+       {
+    	   System.out.println("To Validate: Festive Logo is not visible");
+       }
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////      
   //Testing SSO: FD using Funds from HDFC Bank 
        
@@ -185,7 +190,7 @@ catch(Exception e)
  // Clicking the FASTag offer
 //  try is used to run code that might throw an error/exception
  try {
-	    WebElement fastTag = driver.findElement(By.xpath("//p[contains(text(),'Naveen')]"));
+	    WebElement fastTag = driver.findElement(By.xpath("//p[contains(text(),'FASTag')]"));
 	    
 	    if (fastTag.isDisplayed()) {
 	        // Move to the heading
