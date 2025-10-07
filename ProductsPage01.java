@@ -19,7 +19,7 @@ public class ProductsPage01 {
 
       XpresswayLoginPage loginPage = new XpresswayLoginPage(); // Calling class creating "loginPage" object
        WebDriver driver = loginPage.login(); // calling method of previous code
-        Thread.sleep(3000); 
+        Thread.sleep(5000); 
         System.out.println("<<<<<<<<<<<<<<<<<PRODUCTS_PAGE VALIDATION>>>>>>>>>>>>>>>>>");
 //Validate: User is NTB or ETB
        try { 
@@ -47,10 +47,10 @@ public class ProductsPage01 {
         WebElement festiveLogo= driver.findElement(By.xpath("//*[@class='cmp-logo-link']"));
        if (festiveLogo.isDisplayed())
        {
-    	   System.out.println("To validate festive Logo:: It is visible");
+    	   System.out.println("To validate festive Logo:: It is visible ::Pass");
        }
        else {
-    	   System.out.println("To validate festive Logo:: It is not visible");
+    	   System.out.println("To validate festive Logo:: It is not visible ::Fail");
     	   
        }
        Thread.sleep(3000);}
@@ -75,7 +75,7 @@ public class ProductsPage01 {
        WebElement button = driver.findElement(By.xpath("//p[contains(text(),'Fixed Deposit using Funds from HDFC Bank')]/following::a[1]"));
        // Click the button
        button.click();      
-       Thread.sleep(8000); // Wait for redirect
+       Thread.sleep(9000); // Wait for redirect
                
  //Post click it will redirect to another tab, so we have to use method getWindowHandle();
  
@@ -118,7 +118,7 @@ try {
                WebElement button01 = driver.findElement(By.xpath("//p[contains(text(),'Credit Card Application')]/following::a[1]"));
                // Click the button
                button01.click();      
-               Thread.sleep(8000); // Wait for redirect
+               Thread.sleep(9000); // Wait for redirect
                        
          //Post click it will redirect to another tab, so we have to use method getWindowHandle();
          

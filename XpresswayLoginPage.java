@@ -71,7 +71,7 @@ public class XpresswayLoginPage {
 		Thread.sleep(20000);
 		//Entering correct OTP
 		submit.click();
-			Thread.sleep(7000);
+			Thread.sleep(9000);
 		//driver.close();
 			return driver; 
 // we write this: to keep using the same browser in another class or method
