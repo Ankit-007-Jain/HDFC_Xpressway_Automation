@@ -75,7 +75,7 @@ public class ProductsPage01 {
        WebElement button = driver.findElement(By.xpath("//p[contains(text(),'Fixed Deposit using Funds from HDFC Bank')]/following::a[1]"));
        // Click the button
        button.click();      
-       Thread.sleep(9000); // Wait for redirect
+       Thread.sleep(11000); // Wait for redirect
                
  //Post click it will redirect to another tab, so we have to use method getWindowHandle();
  
@@ -83,10 +83,14 @@ public class ProductsPage01 {
 //Now use index for specific tab; so overhere it will go to SSO url page, 
   driver.switchTo().window(tabs.get(1)); //Once you navigate SSO url page, you can validate SSO url page  
 
-            //Now Verifying SSO URL
+            //Now Verifying SSO URL using currentURL and cross checking with "Hey" keyword
+  
+// WebElement heyElement = driver.findElement(By.xpath("//p[starts-with(text(),'Hey, ')]"));
         	String actualSSOUrl=driver.getCurrentUrl();	
 
-            if (actualSSOUrl.contains("SSO_AUTHENTICATION_SUCCESS")) {
+        	 if (actualSSOUrl.contains("SSO_AUTHENTICATION_SUCCESS")) 
+ 
+            {
                 System.out.println("SSO Validation: Fixed Deposit using Funds from HDFC Bank SSO Test:: Pass");
             } else 
             {
@@ -118,24 +122,26 @@ try {
                WebElement button01 = driver.findElement(By.xpath("//p[contains(text(),'Credit Card Application')]/following::a[1]"));
                // Click the button
                button01.click();      
-               Thread.sleep(9000); // Wait for redirect
+               Thread.sleep(13000); // Wait for redirect
                        
          //Post click it will redirect to another tab, so we have to use method getWindowHandle();
          
           ArrayList<String> tabs02=new ArrayList<>(driver.getWindowHandles()); //Creating ArrayList<string> and storing all tabs in that
         //Now use index for specific tab; so overhere it will go to SSO url page, 
           driver.switchTo().window(tabs02.get(1)); //Once you navigate SSO url page, you can validate SSO url page  
-          Thread.sleep(3000);
+  
                     //Now Verifying SSO URL
+     //     	WebElement helloElement = driver.findElement(By.xpath("//p[starts-with(text(),'Hello ')]"));
                 	String actualSSOUrl01=driver.getCurrentUrl();	
 
-                    if (actualSSOUrl01.contains("SSO_AUTHENTICATION_SUCCESS")) {
-                        System.out.println("SSO Validation: Credit Card Application SSO Test:: Pass");
+         if (actualSSOUrl01.contains("SSO_AUTHENTICATION_SUCCESS")) 
+ {
+                System.out.println("SSO Validation: Credit Card Application SSO Test:: Pass");
                     } else 
                     {
                         System.out.println("SSO Validation: Credit Card Application SSO Test: Fail. Correct URL should be:: " + actualSSOUrl01);
                     }
-                    Thread.sleep(10000);
+                 //   Thread.sleep(10000);
                    driver.close();
                    driver.switchTo().window(tabs02.get(0)); //Again it will redirect to Home page(Offers Screen)
                    Thread.sleep(2000);
@@ -144,7 +150,11 @@ catch(Exception e)
 {
 	System.out.println("To Validate:: Credit Card Application offer is not visible");
 }
-    //Scrolling on top of the page                
+
+    //Scrolling on top of the page   
+JavascriptExecutor js1 = (JavascriptExecutor) driver;
+js1.executeScript("window.scrollTo(0, 0);");
+Thread.sleep(3000);	
                    
             
  //////////////////////////////////////////////////////////////////////////////   
@@ -162,6 +172,7 @@ catch(Exception e)
  ////////////////////////////////////////////////////////////////////////////////////////////////////////////           
         
 //Checking To Top cta working
+    try {
  WebElement toTop= driver.findElement(By.className("scrolltotop_desktop")); 
  toTop.click();
  if(toTop.isDisplayed()) {
@@ -171,6 +182,11 @@ catch(Exception e)
 	 System.out.println("To Top cta validation: To Top CTA not Working: Fail::" +toTop.isDisplayed());
  }
  Thread.sleep(3000);
+    }
+    catch (Exception e)
+    {
+    	System.out.println("To Top CTA is not visible");
+    }
  
  ////////////////////////////////////////////////////////////////////////////////////////////////////////
  
@@ -228,7 +244,7 @@ Thread.sleep(2000);
 //driver.switchTo().window(anotherTab.get(0)); //tabs.get(0):: what we fixed for the first window above
 //Scrolling on top of the page
 
-JavascriptExecutor js1 = (JavascriptExecutor) driver;
+JavascriptExecutor js11 = (JavascriptExecutor) driver;
 js.executeScript("window.scrollTo(0, 0);");
 Thread.sleep(2000);
  
