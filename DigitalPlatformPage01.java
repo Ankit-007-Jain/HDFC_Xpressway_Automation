@@ -22,6 +22,7 @@ public class DigitalPlatformPage01 {
 		
 		WebElement digitalPlatform= driver.findElement(By.xpath("//span[text()='Digital Platforms']"));
 		digitalPlatform.click();
+		ScreenshotUtil.takeScreenshot(driver, "Digital Platform Tab");
 		System.out.println("<<<<<<<<<<<<<<<<<DigitalPlatforms_PAGE VALIDATION>>>>>>>>>>>>>>>>>");
 		Thread.sleep(3000);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +38,6 @@ public class DigitalPlatformPage01 {
 	hdfcSkyCTA.click();
 	//((JavascriptExecutor) driver).executeScript("arguments[0].click();", hdfcSkyCTA);
 	Thread.sleep(10000);
-	
 	ArrayList<String> tab= new ArrayList<String>(driver.getWindowHandles());
 	driver.switchTo().window(tab.get(1));
 	Thread.sleep(7000);
@@ -45,6 +45,7 @@ public class DigitalPlatformPage01 {
 	if (currentUrl03.contains("LCCode=7738&LGCode=AYUS12"))
 	{						
 	        System.out.println("To Validate: HDFC SKY URL contains LG and LC code ::Pass");
+	        ScreenshotUtil.takeScreenshot(driver, "HDFC SKY Page");
 	    } else {
 	        System.out.println("To Validate: HDFC SKY URL does not contains LG and LC code ::Fail");
 	    }
@@ -76,6 +77,8 @@ else {
 }
 ArrayList<String> offersTab=new ArrayList<String>(driver.getWindowHandles());
 driver.switchTo().window(offersTab.get(1));
+Thread.sleep(3000);
+ScreenshotUtil.takeScreenshot(driver, "Offers Tab");
 driver.close();
 driver.switchTo().window(offersTab.get(0));
 Thread.sleep(3000);

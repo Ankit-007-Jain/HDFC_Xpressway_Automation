@@ -40,6 +40,7 @@ public class ProductsPage01 {
        {
     	   System.out.println("User Validation:: Heading element not found on the page");
        }
+       ScreenshotUtil.takeScreenshot(driver, "ETB User and Festive Logo");
  ///////////////////////////////////////////////////////////////////////////////////////////////
  
 //    To validate newly added festive logo
@@ -76,7 +77,7 @@ public class ProductsPage01 {
        // Click the button
        button.click();      
        Thread.sleep(11000); // Wait for redirect
-               
+                  
  //Post click it will redirect to another tab, so we have to use method getWindowHandle();
  
   ArrayList<String> tabs=new ArrayList<>(driver.getWindowHandles()); //Creating ArrayList<string> and storing all tabs in that
@@ -85,13 +86,14 @@ public class ProductsPage01 {
 
             //Now Verifying SSO URL using currentURL and cross checking with "Hey" keyword
   
-// WebElement heyElement = driver.findElement(By.xpath("//p[starts-with(text(),'Hey, ')]"));
+ WebElement heyElement = driver.findElement(By.xpath("//p[starts-with(text(),'Hey, ')]"));
         	String actualSSOUrl=driver.getCurrentUrl();	
 
-        	 if (actualSSOUrl.contains("SSO_AUTHENTICATION_SUCCESS")) 
+        	 if (heyElement.isDisplayed() && actualSSOUrl.contains("SSO_AUTHENTICATION_SUCCESS")) 
  
             {
                 System.out.println("SSO Validation: Fixed Deposit using Funds from HDFC Bank SSO Test:: Pass");
+                ScreenshotUtil.takeScreenshot(driver, "Fixed Deposit using Funds from HDFC Bank - SSO Test");
             } else 
             {
                 System.out.println("SSO Validation: Fixed Deposit using Funds from HDFC Bank SSO Test: Fail. Correct URL should be:: " + actualSSOUrl);
@@ -123,6 +125,7 @@ try {
                // Click the button
                button01.click();      
                Thread.sleep(13000); // Wait for redirect
+               
                        
          //Post click it will redirect to another tab, so we have to use method getWindowHandle();
          
@@ -137,6 +140,7 @@ try {
          if (actualSSOUrl01.contains("SSO_AUTHENTICATION_SUCCESS")) 
  {
                 System.out.println("SSO Validation: Credit Card Application SSO Test:: Pass");
+                ScreenshotUtil.takeScreenshot(driver, "Credit Card Offer - SSO Test");
                     } else 
                     {
                         System.out.println("SSO Validation: Credit Card Application SSO Test: Fail. Correct URL should be:: " + actualSSOUrl01);
@@ -174,6 +178,8 @@ Thread.sleep(3000);
 //Checking To Top cta working
     try {
  WebElement toTop= driver.findElement(By.className("scrolltotop_desktop")); 
+ Thread.sleep(3000);
+ ScreenshotUtil.takeScreenshot(driver, "To TOP CTA");
  toTop.click();
  if(toTop.isDisplayed()) {
  System.out.println("To Top cta validation: To Top CTA Working:: Pass");
@@ -196,6 +202,7 @@ Thread.sleep(3000);
  Actions applyOnline01 = new Actions(driver);
  applyOnline01.moveToElement(applyOnline).perform();
  Thread.sleep(3000);
+ ScreenshotUtil.takeScreenshot(driver, "Apply Online section");
  
  if (applyOnline.isDisplayed()) {
 	    System.out.println("To Validate: Apply Online section visible:: Pass");
@@ -228,6 +235,7 @@ Thread.sleep(3000);
 	        // Check if the URL contains LCCode=7738&LGCode=AYUS12
 	        if (currentUrl.contains("LCCode=7738&LGCode=AYUS12")) {
 	            System.out.println("To Validate: FASTag URL Contains LG and LC code:: Pass");
+	            ScreenshotUtil.takeScreenshot(driver, "FASTag URL Contains LG and LC code");
 	        } else {
 	            System.out.println("To Validate: FASTag URL Does Not Contain LG and LC code:: Fail");
 	        }
@@ -258,6 +266,6 @@ Thread.sleep(2000);
        services.click();
        System.out.println("To Validate Services tab navigation:: Able to Navigate Service Tab:: Pass");
       Thread.sleep(3000);
-     
+      ScreenshotUtil.takeScreenshot(driver, "Services Tab");
 	 return driver;
 }}

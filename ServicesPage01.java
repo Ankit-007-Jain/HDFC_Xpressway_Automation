@@ -45,7 +45,7 @@ public class ServicesPage01 {
 		     tabs03= new ArrayList<String>(driver.getWindowHandles());
 		     driver.switchTo().window(tabs03.get(1));
 		     Thread.sleep(10000); 
-		 
+		     ScreenshotUtil.takeScreenshot(driver, "Pan Updation Page");
 //Validate: LGCODE AND LCCODE IN THE URL
 		String actualURL=driver.getCurrentUrl();
 		
@@ -90,9 +90,11 @@ public class ServicesPage01 {
 		    // Click the dropdown to ensure it opens (some implementations require click)
 		    try {
 		        filter.click();
+		        Thread.sleep(2000);
+		        ScreenshotUtil.takeScreenshot(driver, "Selecting Filters");
 		    } catch (Exception ignored) { /* ignore click if not needed */ }
 		    Thread.sleep(500); // small pause for dropdown animate
-
+		    
 		    // Use Select to pick Loans
 		    Select select = new Select(filter);
 		    select.selectByVisibleText("Loans");
@@ -100,6 +102,7 @@ public class ServicesPage01 {
 		    // Wait short time for the services/cards to be refreshed after selecting filter
 		    // (adjust locator to a container that is updated when filter changes)
 		    Thread.sleep(1500);
+		    ScreenshotUtil.takeScreenshot(driver, "Selected Filters");
 
 		    // Scroll to bottom where services are expected to appear (or scroll to specific element)
 		    ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
@@ -193,6 +196,7 @@ public class ServicesPage01 {
 			System.out.println("To Validate: Navigating to Explore Tab:: Pass");
 			Thread.sleep(2000);
 			explore.click();
+			ScreenshotUtil.takeScreenshot(driver, "Explore Tab");
 		}
 		else {
 			System.out.println("To Validate: Navigating to Explore Tab:: Fail");
@@ -207,7 +211,8 @@ public class ServicesPage01 {
 		action.moveToElement(whatsappCTA).perform();
 		Thread.sleep(2000);
 		whatsappCTA.click();
-	System.out.println("To Validate: Whatsapp function under Explore tab navigation is working:: Pass");
+		ScreenshotUtil.takeScreenshot(driver, "Explore Tab - Whatsapp Page");
+	   System.out.println("To Validate: Whatsapp function under Explore tab navigation is working:: Pass");
 		Thread.sleep(4000);
 		
 		ArrayList<String> tabs1=new ArrayList<>(driver.getWindowHandles());  
