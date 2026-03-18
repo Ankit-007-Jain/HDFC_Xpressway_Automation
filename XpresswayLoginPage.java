@@ -41,7 +41,7 @@ public class XpresswayLoginPage {
 
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.get("https://applyonline.hdfcbank.com/xpressway.html?LGCODE=AYUS12&LCCODE=7738");
+        driver.get("https://applyonline.hdfc.bank.in/xpressway.html?LGCODE=AYUS12&&LCCODE=7738");
         Thread.sleep(2000);
         System.out.println("<<<<<<<<<<<Xpressway launched Successfully>>>>>>>>>>>>>>>");
 
@@ -86,7 +86,6 @@ public class XpresswayLoginPage {
                 System.out.println("DOB field Validation: An error message was shown because the entered age was below 18 or above 118 during login.: Pass");
                 ScreenshotUtil.takeScreenshot(driver, "DOB Field Validation");
             }
-          
             year.clear();
 
             driver.findElement(By.cssSelector("input.numericInput[placeholder=' YYYY']")).sendKeys("1992");
