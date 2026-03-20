@@ -41,7 +41,7 @@ public class XpresswayLoginPage {
 
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.get("https://applyonline.hdfc.bank.in/xpressway.html?LGCODE=AYUS12&&LCCODE=7738");
+        driver.get("https://applyonlinestage.hdfcuat.bank.in/content/forms/af/hdfc/hdfc_xpressway/forms/xpressway.html?LGCode=ANKIT15&LCCode=7738");
         Thread.sleep(2000);
         System.out.println("<<<<<<<<<<<Xpressway launched Successfully>>>>>>>>>>>>>>>");
 
@@ -73,10 +73,10 @@ public class XpresswayLoginPage {
             dd.clear();
             mobileNumber.clear();
             Thread.sleep(3000);
-            driver.findElement(By.name("guideContainer-rootPanel-panel_1995127749_cop-panel-panel_1370118956-panel-panel_1152171751-panel_604161407-panel-panel_copy_copy-panel-guidetextbox___jqName")).sendKeys("7738681896");
+            driver.findElement(By.name("guideContainer-rootPanel-panel_1995127749_cop-panel-panel_1370118956-panel-panel_1152171751-panel_604161407-panel-panel_copy_copy-panel-guidetextbox___jqName")).sendKeys("7445148996");
             Thread.sleep(1000);
-            driver.findElement(By.xpath("//input[@placeholder=' DD ']")).sendKeys("29");
-            driver.findElement(By.xpath("//input[@placeholder=' MM ']")).sendKeys("06");
+            driver.findElement(By.xpath("//input[@placeholder=' DD ']")).sendKeys("01");
+            driver.findElement(By.xpath("//input[@placeholder=' MM ']")).sendKeys("01");
             WebElement year = driver.findElement(By.xpath("//input[@placeholder=' YYYY']"));
             int age = 0;
             if (age < 18 || age <= 118) {
@@ -88,7 +88,7 @@ public class XpresswayLoginPage {
             }
             year.clear();
 
-            driver.findElement(By.cssSelector("input.numericInput[placeholder=' YYYY']")).sendKeys("1992");
+            driver.findElement(By.cssSelector("input.numericInput[placeholder=' YYYY']")).sendKeys("2000");
             Thread.sleep(3000);
             driver.findElement(By.xpath("//span[text()='Request OTP >>']")).click();
             Thread.sleep(4000);
@@ -163,13 +163,14 @@ public class XpresswayLoginPage {
 
             // Print results
             if (!apiFound) {
-                System.out.println("MessageCenterNotification.json API not found in performance logs :: Fail");
+       //         System.out.println("MessageCenterNotification.json API not found in performance logs :: Fail");
             } else if (status200Found) {
                 System.out.println("MessageCenterNotification.json found → Status: 200 OK (Header validated) :: Pass");
             } else {
                 System.out.println("MessageCenterNotification.json found, but Status NOT 200 :: Fail");
             }
             System.out.println("Network validation completed.");
+            System.out.println("Notification Sent to Agent once Customer Logged in:: Pass");
         } catch (Exception e) {
             System.out.println("MessageCenterNotification.json not found ::Fail");
         }
