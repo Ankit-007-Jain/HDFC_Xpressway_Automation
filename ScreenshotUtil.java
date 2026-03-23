@@ -1,4 +1,4 @@
-package xpressway_HDFC_Prod;
+package Xpressway_NewProd;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -7,7 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.commons.io.FileUtils;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class ScreenshotUtil {
 
@@ -37,7 +38,7 @@ public class ScreenshotUtil {
             File dest = new File(SCREENSHOT_DIR + File.separator + fileName);
 
             File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(src, dest);
+            Files.copy(src.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
             return dest.getAbsolutePath();
         } catch (IOException ioe) {

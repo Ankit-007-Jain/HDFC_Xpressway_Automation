@@ -1,4 +1,4 @@
-package xpressway_HDFC_Prod;
+package Xpressway_NewProd;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -41,7 +41,7 @@ public class XpresswayLoginPage {
 
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.get("https://applyonlinestage.hdfcuat.bank.in/content/forms/af/hdfc/hdfc_xpressway/forms/xpressway.html?LGCode=ANKIT15&LCCode=7738");
+        driver.get("https://applyonline.hdfc.bank.in/xpressway.html?LGCode=AYUS12&LCCode=7738");
         Thread.sleep(2000);
         System.out.println("<<<<<<<<<<<Xpressway launched Successfully>>>>>>>>>>>>>>>");
 
@@ -73,10 +73,10 @@ public class XpresswayLoginPage {
             dd.clear();
             mobileNumber.clear();
             Thread.sleep(3000);
-            driver.findElement(By.name("guideContainer-rootPanel-panel_1995127749_cop-panel-panel_1370118956-panel-panel_1152171751-panel_604161407-panel-panel_copy_copy-panel-guidetextbox___jqName")).sendKeys("7445148996");
+            driver.findElement(By.name("guideContainer-rootPanel-panel_1995127749_cop-panel-panel_1370118956-panel-panel_1152171751-panel_604161407-panel-panel_copy_copy-panel-guidetextbox___jqName")).sendKeys("9869377650");
             Thread.sleep(1000);
-            driver.findElement(By.xpath("//input[@placeholder=' DD ']")).sendKeys("01");
-            driver.findElement(By.xpath("//input[@placeholder=' MM ']")).sendKeys("01");
+            driver.findElement(By.xpath("//input[@placeholder=' DD ']")).sendKeys("07");
+            driver.findElement(By.xpath("//input[@placeholder=' MM ']")).sendKeys("12");
             WebElement year = driver.findElement(By.xpath("//input[@placeholder=' YYYY']"));
             int age = 0;
             if (age < 18 || age <= 118) {
@@ -88,7 +88,7 @@ public class XpresswayLoginPage {
             }
             year.clear();
 
-            driver.findElement(By.cssSelector("input.numericInput[placeholder=' YYYY']")).sendKeys("2000");
+            driver.findElement(By.cssSelector("input.numericInput[placeholder=' YYYY']")).sendKeys("1987");
             Thread.sleep(3000);
             driver.findElement(By.xpath("//span[text()='Request OTP >>']")).click();
             Thread.sleep(4000);

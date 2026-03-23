@@ -1,4 +1,4 @@
-package xpressway_HDFC_Prod;
+package Xpressway_NewProd;
 import org.openqa.selenium.WebDriver;
 
 public class MainMethod {
