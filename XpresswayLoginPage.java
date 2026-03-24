@@ -73,10 +73,10 @@ public class XpresswayLoginPage {
             dd.clear();
             mobileNumber.clear();
             Thread.sleep(3000);
-            driver.findElement(By.name("guideContainer-rootPanel-panel_1995127749_cop-panel-panel_1370118956-panel-panel_1152171751-panel_604161407-panel-panel_copy_copy-panel-guidetextbox___jqName")).sendKeys("9869377650");
+            driver.findElement(By.name("guideContainer-rootPanel-panel_1995127749_cop-panel-panel_1370118956-panel-panel_1152171751-panel_604161407-panel-panel_copy_copy-panel-guidetextbox___jqName")).sendKeys("7738681896");
             Thread.sleep(1000);
-            driver.findElement(By.xpath("//input[@placeholder=' DD ']")).sendKeys("07");
-            driver.findElement(By.xpath("//input[@placeholder=' MM ']")).sendKeys("12");
+            driver.findElement(By.xpath("//input[@placeholder=' DD ']")).sendKeys("29");
+            driver.findElement(By.xpath("//input[@placeholder=' MM ']")).sendKeys("06");
             WebElement year = driver.findElement(By.xpath("//input[@placeholder=' YYYY']"));
             int age = 0;
             if (age < 18 || age <= 118) {
@@ -88,7 +88,7 @@ public class XpresswayLoginPage {
             }
             year.clear();
 
-            driver.findElement(By.cssSelector("input.numericInput[placeholder=' YYYY']")).sendKeys("1987");
+            driver.findElement(By.cssSelector("input.numericInput[placeholder=' YYYY']")).sendKeys("1992");
             Thread.sleep(3000);
             driver.findElement(By.xpath("//span[text()='Request OTP >>']")).click();
             Thread.sleep(4000);
