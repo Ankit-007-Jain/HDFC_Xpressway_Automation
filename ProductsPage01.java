@@ -3,8 +3,11 @@ package Xpressway_NewProd;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +16,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 public class ProductsPage01 {
 
@@ -341,19 +345,30 @@ public class ProductsPage01 {
 
                 boolean clicked = false;
 
+                Actions actions = new Actions(driver);
+
                 for (WebElement checkbox : checkboxes) {
                     if (checkbox.isDisplayed()) {
+
+                        // 🔥 Move to element (real user scroll)
+                        actions.moveToElement(checkbox).perform();
+                        Thread.sleep(1500);
+
+                        // Extra scroll (safety)
                         js.executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
                         Thread.sleep(1000);
+
+                        // Click using JS (most stable)
                         js.executeScript("arguments[0].click();", checkbox);
-                        Thread.sleep(4000);
+                        Thread.sleep(3000);
+
                         clicked = true;
                         System.out.println("Checkbox clicked :: PASS");
                         break;
                     }
                 }
 
-                if (!clicked) throw new Exception();
+                if (!clicked) throw new Exception("Checkbox not found/displayed");
 
             } catch (Exception e) {
                 System.out.println("Checkbox not clickable :: FAIL");
@@ -411,7 +426,7 @@ public class ProductsPage01 {
 
             Thread.sleep(3000);
 
-            // ================= CONTINUE =================
+         // ================= CONTINUE =================
             try {
                 List<WebElement> buttons = wait.until(
                         ExpectedConditions.presenceOfAllElementsLocatedBy(
@@ -424,7 +439,7 @@ public class ProductsPage01 {
                         js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
                         Thread.sleep(2000);
                         js.executeScript("arguments[0].click();", btn);
-                        Thread.sleep(11000);
+                        Thread.sleep(5000); // reduce wait (important)
                         clicked = true;
                         System.out.println("Continue clicked :: PASS");
                         break;
@@ -435,10 +450,48 @@ public class ProductsPage01 {
 
             } catch (Exception e) {
                 System.out.println("Continue not clickable :: FAIL");
-                Thread.sleep(4000);
                 isConsentSuccess = false;
             }
 
+
+            // ================= PROCEED POPUP =================
+            try {
+                WebDriverWait waitPopup = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+                // Wait ONLY for presence (not clickable)
+                List<WebElement> proceedBtns = waitPopup.until(
+                        ExpectedConditions.presenceOfAllElementsLocatedBy(
+                                By.id("err-popup-buttonText")));
+
+                boolean clicked = false;
+
+                for (WebElement btn : proceedBtns) {
+                    if (btn.isDisplayed()) {
+
+                        Thread.sleep(2000); // allow animation to finish
+
+                        js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
+                        js.executeScript("arguments[0].click();", btn);
+
+                        System.out.println("Proceed popup handled :: CLICKED");
+                        clicked = true;
+                        break;
+                    }
+                }
+
+                if (!clicked) {
+                    System.out.println("Proceed popup present but not clickable");
+                }
+
+            } catch (TimeoutException e) {
+                // Popup did not appear — expected case
+                System.out.println("Proceed popup not appeared :: CONTINUING FLOW");
+
+            } catch (Exception e) {
+                System.out.println("Error handling Proceed popup: " + e.getMessage());
+            }
+            
+            
             // ✅ FINAL RESULT
             if (isSSOUrlValid && isConsentSuccess) {
                 System.out.println("Credit Card Application SSO Validation :: PASS");
@@ -636,14 +689,52 @@ public class ProductsPage01 {
                 WebElement viewEligibility = wait.until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//span[contains(text(),'View Loan Eligibility')]")));
 
-                js.executeScript("arguments[0].click();", viewEligibility); Thread.sleep(3000);
+                js.executeScript("arguments[0].click();", viewEligibility); 
                 System.out.println("View Loan Eligibility clicked :: PASS");
-
+                Thread.sleep(30000);
             } catch (Exception e) {
                 System.out.println("View Loan Eligibility click :: FAIL");
                 isConsentSuccess = false;
             }
+            
+            try {
+                WebElement viewEligibility = wait.until(ExpectedConditions.elementToBeClickable(
+                        By.xpath("//span[contains(text(),'View Loan Eligibility')]")));
 
+                js.executeScript("arguments[0].click();", viewEligibility);
+                System.out.println("View Loan Eligibility clicked :: PASS");
+
+                // ✅ Validate next page element (IMPORTANT)
+                WebDriverWait waitNext = new WebDriverWait(driver, Duration.ofSeconds(15));
+                waitNext.until(ExpectedConditions.presenceOfElementLocated(
+                        By.xpath("//span[text()='Identify Yourself >>']")));
+
+                System.out.println("Navigation to next step :: SUCCESS");
+
+            } catch (Exception e) {
+                System.out.println("OTP Screen :: FAIL");
+                isConsentSuccess = false;
+            }
+            //Clicking Identify Yourself
+            try {
+                WebElement button = driver.findElement(
+                        By.xpath("//span[text()='Identify Yourself >>']/parent::button"));
+
+                if (button.isEnabled()) {
+
+                    js.executeScript("arguments[0].click();", button);
+                    System.out.println("Identify Yourself Button clicked :: PASS");
+
+                } else {
+                    System.out.println("Identify Yourself Button is DISABLED :: FAIL");
+                    isConsentSuccess = false;
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error while clicking Identify Yourself: " + e.getMessage());
+                isConsentSuccess = false;
+            }
+            
             // 🔹 FINAL RESULT
             if (isSSOValid && isConsentSuccess) {
   //              System.out.println("Loan on Credit Card Flow :: PASS");
@@ -729,7 +820,6 @@ public class ProductsPage01 {
         } catch (Exception e) {
             System.out.println("FASTag offer not visible :: FAIL");
         }
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
