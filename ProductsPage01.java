@@ -620,10 +620,10 @@ public class ProductsPage01 {
                 isConsentSuccess = false;
             }
 
-            Thread.sleep(3000);
+            Thread.sleep(1000);
 
          // 🔥 IMPORTANT WAIT AFTER DIGITS (VERY IMPORTANT)
-            Thread.sleep(2000);
+            Thread.sleep(1000);
 
             // 🔹 STEP 6: Checkbox (FIXED)
             try {
@@ -685,17 +685,6 @@ public class ProductsPage01 {
             Thread.sleep(3000);
 
             // 🔹 STEP 9: View Loan Eligibility
-            try {
-                WebElement viewEligibility = wait.until(ExpectedConditions.elementToBeClickable(
-                        By.xpath("//span[contains(text(),'View Loan Eligibility')]")));
-
-                js.executeScript("arguments[0].click();", viewEligibility); 
-                System.out.println("View Loan Eligibility clicked :: PASS");
-                Thread.sleep(30000);
-            } catch (Exception e) {
-                System.out.println("View Loan Eligibility click :: FAIL");
-                isConsentSuccess = false;
-            }
             
             try {
                 WebElement viewEligibility = wait.until(ExpectedConditions.elementToBeClickable(
@@ -703,13 +692,13 @@ public class ProductsPage01 {
 
                 js.executeScript("arguments[0].click();", viewEligibility);
                 System.out.println("View Loan Eligibility clicked :: PASS");
-
+                Thread.sleep(27000);
                 // ✅ Validate next page element (IMPORTANT)
                 WebDriverWait waitNext = new WebDriverWait(driver, Duration.ofSeconds(15));
                 waitNext.until(ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//span[text()='Identify Yourself >>']")));
 
-                System.out.println("Navigation to next step :: SUCCESS");
+              //  System.out.println("Navigation to next step :: SUCCESS");
 
             } catch (Exception e) {
                 System.out.println("OTP Screen :: FAIL");
@@ -723,6 +712,7 @@ public class ProductsPage01 {
                 if (button.isEnabled()) {
 
                     js.executeScript("arguments[0].click();", button);
+                    Thread.sleep(15000);
                     System.out.println("Identify Yourself Button clicked :: PASS");
 
                 } else {
@@ -795,7 +785,6 @@ public class ProductsPage01 {
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        // FASTag
         try {
             WebElement fastTag = driver.findElement(By.xpath("//p[contains(text(),'FASTag')]"));
 
@@ -813,6 +802,18 @@ public class ProductsPage01 {
 
                 System.out.println("FASTag Navigation:: Pass");
 
+                //SCENARIO: URL Validation - LGCODE, LCCODE
+                String currentURL = driver.getCurrentUrl();
+
+                if (currentURL.contains("LCCode=7738") &&
+                    currentURL.contains("LGCode=AYUS12") &&
+                    currentURL.contains("channelsource=AX&xjid")) {
+
+                    System.out.println("FASTag URL contains LGCODE, LCCODE and Channelsource:: Pass");
+                } else {
+                    System.out.println("FASTag URL contains LGCODE, LCCODE and Channelsource:: Fail");
+                }
+
                 driver.close();
                 driver.switchTo().window(anotherTab.get(0));
             }
@@ -820,6 +821,7 @@ public class ProductsPage01 {
         } catch (Exception e) {
             System.out.println("FASTag offer not visible :: FAIL");
         }
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, 0)");
