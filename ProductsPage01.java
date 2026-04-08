@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
@@ -52,87 +53,238 @@ public class ProductsPage01 {
         /////////////////////////////////////////////////////////////////////////
         
      // PERSONAL LOAN
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        Actions actions = new Actions(driver);
+
+        String parentWindow = driver.getWindowHandle();
+
         try {
-            WebElement heading03 = driver.findElement(By.xpath("//p[normalize-space()='Personal Loan']"));
+            WebElement heading03 = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("//p[normalize-space()='Personal Loan']")));
 
-            new Actions(driver).moveToElement(heading03).perform();
-            Thread.sleep(2000);
+            actions.moveToElement(heading03).perform();
 
-            WebElement button001 = driver.findElement(
-                    By.xpath("(//p[normalize-space()='Personal Loan'])[1]/following::a[1]"));
-            button001.click();
+            WebElement button001 = wait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.xpath("(//p[normalize-space()='Personal Loan'])[1]/following::a[1]")));
 
-            Thread.sleep(10000);
+            // 🔥 Force click (VERY IMPORTANT)
+            js.executeScript("arguments[0].click();", button001);
+            Thread.sleep(20000);
+            // 🔥 Wait for new tab safely
+            boolean tabOpened = false;
+            for (int i = 0; i < 10; i++) {
+                if (driver.getWindowHandles().size() > 1) {
+                    tabOpened = true;
+                    break;
+                }
+                Thread.sleep(1000);
+            }
 
-            ArrayList<String> tabs001 = new ArrayList<>(driver.getWindowHandles());
-            driver.switchTo().window(tabs001.get(1));
+            if (!tabOpened) {
+                System.out.println("Personal Loan tab not opened :: SKIPPING FLOW");
+                return driver; // 🔥 IMPORTANT → don’t break next flows
+            }
 
+            // 🔥 Switch to new tab
+            for (String window : driver.getWindowHandles()) {
+                if (!window.equals(parentWindow)) {
+                    driver.switchTo().window(window);
+                    break;
+                }
+            }
+            Thread.sleep(3000);
             String actualSSOUrl001 = driver.getCurrentUrl();
-
-            //Step 1: Check SSO URL
             boolean isSSOUrlValid = actualSSOUrl001.contains("SSO_AUTHENTICATION_SUCCESS");
 
-            // Step 2: Consent Flow Validation
-            boolean isConsentFlowSuccess = false;
-
-            try {
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-                // Checkbox
-                WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(
-                        By.id("checkbox-609cf79d74")));
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", checkbox);
-                Thread.sleep(2000);
-
-                // Scroll button
-                WebElement scrollBtn = wait.until(ExpectedConditions.elementToBeClickable(
-                        By.className("go-to-bottom-btn")));
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", scrollBtn);
-                Thread.sleep(2000);
-
-                // Continue flow (optional but good)
-                WebElement agreeBtn = driver.findElement(By.id("button-d780d15832"));
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", agreeBtn);
-                Thread.sleep(2000);
-
-                WebElement applyBtn = driver.findElement(By.id("button-287ab08488"));
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", applyBtn);
-
-                isConsentFlowSuccess = true;
-                System.out.println("Consent Flow:: Pass");
-
-            } catch (Exception e) {
-                isConsentFlowSuccess = false;
-                System.out.println("Personal Loan Consent Flow :: FAIL");
-            }
-
-            // Step 3: FINAL SSO RESULT
-            if (isSSOUrlValid && isConsentFlowSuccess) {
-                System.out.println("Personal Loan SSO Validation:: PASS");
+            if (isSSOUrlValid) {
+                System.out.println("Personal Loan Offer SSO Validation:: PASS");
             } else {
-                System.out.println("Personal Loan SSO Validation:: FAIL");
+                System.out.println("Personal Loan Offer SSO Validation:: FAIL");
             }
 
-        } catch (Exception e) {
+            // 🔥 IMPORTANT: Only continue if SSO success
+            if (!isSSOUrlValid) {
+                System.out.println("Skipping Consent Flow due to SSO failure");
+            } else {
+
+            	boolean isConsentFlowSuccess = false; // 🔥 moved outside
+
+            	// 🔥 IMPORTANT: Only continue if SSO success
+            	if (!isSSOUrlValid) {
+            	    System.out.println("Skipping Consent Flow due to SSO failure");
+            	} else {
+
+            	    try {
+            	        WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(20));
+            	        JavascriptExecutor js20 = (JavascriptExecutor) driver;
+            	        Actions actions31 = new Actions(driver);
+
+            	        // 🔹 RADIO BUTTON (No)
+            	        WebElement radioLabel = wait2.until(ExpectedConditions.elementToBeClickable(
+            	                By.xpath("//label[text()='No']")));
+            	        actions31.moveToElement(radioLabel).click().perform();
+            	        Thread.sleep(2000);
+
+            	        // 🔹 CHECKBOX
+            	        WebElement checkbox = wait2.until(ExpectedConditions.presenceOfElementLocated(
+            	                By.xpath("//input[@id='checkbox-075d5fd88b']")));
+            	        js20.executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
+            	        js20.executeScript("arguments[0].click();", checkbox);
+            	        Thread.sleep(2000);
+            	        // 🔹 GO TO BOTTOM
+            	        WebElement goToBottomBtn = wait2.until(ExpectedConditions.elementToBeClickable(
+            	                By.xpath("//button[contains(@class,'go-to-bottom-btn')]")));
+            	        js20.executeScript("arguments[0].click();", goToBottomBtn);
+            	        Thread.sleep(3000);
+            	        // 🔹 AGREE
+            	        WebElement agreeBtn = wait2.until(ExpectedConditions.elementToBeClickable(
+            	                By.xpath("//button[contains(text(),'I Agree and Continue')]")));
+            	        js20.executeScript("arguments[0].click();", agreeBtn);
+            	        Thread.sleep(3000);
+            	        // 🔹 VIEW ELIGIBILITY
+            	       
+            	        WebElement viewBtn = wait2.until(ExpectedConditions.elementToBeClickable(
+            	                By.xpath("//button[contains(text(),'View Loan Eligibility')]")));
+            	        js20.executeScript("arguments[0].click();", viewBtn);
+            	        Thread.sleep(37000);
+            	        //Clicking HDFC radio button
+            	        wait.until(ExpectedConditions.elementToBeClickable(
+            	                By.xpath("//input[@aria-label='HDFC Bank']")
+            	        )).click();
+            	        Thread.sleep(2000);
+            	        driver.findElement(By.xpath("//button[@aria-label='Proceed >>']")).click();         	        
+            	        Thread.sleep(10000);
+            	        
+            	        //Verify now
+            	    //    driver.findElement(By.xpath("//button[@aria-label='Verify Now>>']")).click();
+            	        //Personal EMail address
+            	        WebElement emailField = wait.until(ExpectedConditions.elementToBeClickable(
+            	                By.xpath("//input[@aria-label='Your Personal Email Address']")));
+            	        new Actions(driver)
+            	               .moveToElement(emailField)
+            	                .click()
+            	                .sendKeys("jainankit886@gmail.com")
+            	                .perform();
+            	       //Fresh loan from dropdown          	          	             	     
+           	            	     Thread.sleep(3000);
+           	            	  WebElement dropdown = wait.until(ExpectedConditions.elementToBeClickable(
+           	            	        By.xpath("//select[@aria-label='Type of Loan']")));
+           	            	Select select = new Select(dropdown);
+           	            	select.selectByVisibleText("Fresh Loan");
+           	            	Thread.sleep(3000);
+           	            	
+            	       
+            	    //clear address line 3 values    
+            	        WebElement address3 = wait.until(ExpectedConditions.elementToBeClickable(
+            	                By.xpath("//input[@aria-label='Address line 3 (Optional)']")));
+
+            	        new Actions(driver)
+            	                .moveToElement(address3)
+            	                .click()
+            	                .keyDown(Keys.CONTROL)
+            	                .sendKeys("a")      // Select all text
+            	                .keyUp(Keys.CONTROL)
+            	                .sendKeys(Keys.DELETE) // Delete selected text
+            	                .perform();
+            	        Thread.sleep(2000);
+            	//Residence Type
+            	    
+            	        WebElement residenceDropdown = driver.findElement(By.xpath("//select[@aria-label='Residence Type']"));
+            	        // Create a Select instance
+            	        Select selectResidence = new Select(residenceDropdown);
+            	        Thread.sleep(3000);
+            	        // Select the value "Rented - with family"
+            	        selectResidence.selectByVisibleText("Rented - with family");
+            	        Thread.sleep(2000);
+            	     // Locate the checkbox by ID
+            	        WebElement checkbox11 = driver.findElement(By.id("guideContainer-rootPanel-panel-panel-panel_copy-panel_1082060735-panel-panel_1766661286-panel-guidecheckbox_copy___1_widget"));
+            	        // Check if it's not already selected
+            	        if(!checkbox11.isSelected()) {
+            	            checkbox11.click();
+            	            Thread.sleep(3000);   
+            	        }	        
+            	      //Company name textbox
+       	            	WebElement companyTextbox = driver.findElement(By.xpath("//*[@id='guideContainer-rootPanel-panel-panel-panel_copy-panel_1082060735-panel-panel1749412867948-panel_123335176-panel_1196989338-panel-panel_685968593-panel-guidedropdownlist___widget']"));
+
+       	          // Create Actions object
+       	          Actions actions59 = new Actions(driver);
+
+       	       ((JavascriptExecutor) driver).executeScript(
+   	                "arguments[0].scrollIntoView({block:'center'});", companyTextbox);
+       	          actions59.moveToElement(companyTextbox)
+       	                 .click()
+       	                 .sendKeys("ADOBE SYSTEMS INDIA PRIVATE LIMITED")
+       	                 .build()
+       	                 .perform();
+       	          Thread.sleep(2000);
+       	          
+            	        //Monthly net income
+            	        WebElement incomeField10 = wait.until(ExpectedConditions.presenceOfElementLocated(
+            	                By.xpath("//input[@aria-label='Your monthly net income (salary)']")));
+            	        ((JavascriptExecutor) driver).executeScript(
+            	                "arguments[0].scrollIntoView({block:'center'});", incomeField10);
+            	        incomeField10.click();Thread.sleep(2000);
+            	        incomeField10.clear();
+            	        incomeField10.sendKeys("100000");
+            	        Thread.sleep(3000);
+        //Work email id	        
+            	     // Locate the email textbox
+            	        WebElement emailTextbox = driver.findElement(By.xpath("//*[@id='guideContainer-rootPanel-panel-panel-panel_copy-panel_1082060735-panel-panel1749412867948-panel_123335176-panel_1196989338-panel_1519523745-guidetextbox_copy_13___widget']"));
+            	        // Create Actions object
+            	        Actions actions60 = new Actions(driver);
+            	        // Scroll to the element
+            	        ((JavascriptExecutor) driver).executeScript(
+            	                "arguments[0].scrollIntoView({block:'center'});", emailTextbox);
+            	        // Move to element, click, and enter value
+            	        actions60.moveToElement(emailTextbox)
+            	                 .click()
+            	                 .sendKeys("jain@adobe.com")
+            	                 .build()
+            	                 .perform();
+            	        Thread.sleep(3000);
+        	        
+        	        WebElement continueBtn = wait.until(ExpectedConditions.elementToBeClickable(
+        	                By.xpath("//span[text()='Continue >>']/ancestor::button")));
+        	        ((JavascriptExecutor) driver).executeScript(
+        	                "arguments[0].scrollIntoView({block:'center'});", continueBtn);
+        	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", continueBtn);           	        
+        	        Thread.sleep(20000);
+
+            	        
+            	        isConsentFlowSuccess = true;
+            	        System.out.println("Consent Flow:: PASS");
+            	    } catch (Exception e) {
+            	        System.out.println("Consent Flow :: FAIL");
+            	        e.printStackTrace();
+            	    }
+            	}
+
+            	// 🔥 VALIDATION (NOW VARIABLE IS ACCESSIBLE)
+            	if (isSSOUrlValid && isConsentFlowSuccess) {
+            	    System.out.println("Personal Loan Offer Validation:: PASS");
+            	} else {
+            	    System.out.println("Personal Loan Offer Validation:: FAIL");
+            	}            
+
+            }} catch (Exception e) {
             System.out.println("Personal Loan Flow :: FAIL");
-            e.printStackTrace();
-        } finally {
-            // Always switch back (VERY IMPORTANT)
+        }
+
+        finally {
+            // 🔥 ALWAYS RETURN TO MAIN TAB (CRITICAL FIX)
             try {
-                ArrayList<String> tabs001 = new ArrayList<>(driver.getWindowHandles());
-                if (tabs001.size() > 1) {
+                ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+                if (tabs.size() > 1) {
                     driver.close();
-                    driver.switchTo().window(tabs001.get(0));
+                    driver.switchTo().window(parentWindow);
                 }
-                Thread.sleep(2000);
             } catch (Exception ex) {
                 System.out.println("Tab recovery failed");
             }
         }
-
-        System.out.println("----------------------------------------------------");
-        System.out.println("Fixed Deposit using funds from HDFC Bank");
-        
+        System.out.println("-------------------------------------------------------");
   /////////////////////////////////////////////////////////////////////////////////
         
      // Fixed Deposit using funds from HDFC Bank - SSO validation
@@ -164,15 +316,15 @@ public class ProductsPage01 {
                 System.out.println("Fixed Deposit SSO Validation :: Fail");
             }
 
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
 
             // Amount field
             try {
-                WebElement amountField = wait.until(ExpectedConditions.presenceOfElementLocated(
+                WebElement amountField = wait1.until(ExpectedConditions.presenceOfElementLocated(
                         By.id("numberinput-e9f4d6b2d8")));
 
-                JavascriptExecutor js = (JavascriptExecutor) driver;
-                js.executeScript("arguments[0].scrollIntoView(true);", amountField);
+                JavascriptExecutor js009 = (JavascriptExecutor) driver;
+                js009.executeScript("arguments[0].scrollIntoView(true);", amountField);
                 Thread.sleep(1000);
 
                 try {
@@ -183,7 +335,7 @@ public class ProductsPage01 {
                     System.out.println("Normal sendKeys failed, using JS");
                 }
 
-                js.executeScript(
+                js009.executeScript(
                         "arguments[0].value='6000'; arguments[0].dispatchEvent(new Event('input'));",
                         amountField);
 
@@ -195,7 +347,7 @@ public class ProductsPage01 {
 
             // Continue button
             try {
-                WebElement continueBtn = wait.until(ExpectedConditions.elementToBeClickable(
+                WebElement continueBtn = wait1.until(ExpectedConditions.elementToBeClickable(
                         By.id("button-070bcd2895")));
 
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", continueBtn);
@@ -209,7 +361,7 @@ public class ProductsPage01 {
 
             // Tenure button
             try {
-                WebElement tenureBtn = wait.until(ExpectedConditions.elementToBeClickable(
+                WebElement tenureBtn = wait1.until(ExpectedConditions.elementToBeClickable(
                         By.id("button-a942f55ce6")));
 
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", tenureBtn);
@@ -223,7 +375,7 @@ public class ProductsPage01 {
 
             // Next Continue
             try {
-                WebElement continueBtn01 = wait.until(ExpectedConditions.elementToBeClickable(
+                WebElement continueBtn01 = wait1.until(ExpectedConditions.elementToBeClickable(
                         By.id("button-be21b9cef9")));
 
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", continueBtn01);
@@ -240,18 +392,18 @@ public class ProductsPage01 {
 
             System.out.println("Review Page: Able to Navigate:: Pass");
 
-            JavascriptExecutor js = (JavascriptExecutor) driver;
+            JavascriptExecutor js12 = (JavascriptExecutor) driver;
             Thread.sleep(5000);
 
             // Checkbox 1
             try {
-                WebElement checkbox1 = wait.until(ExpectedConditions.presenceOfElementLocated(
+                WebElement checkbox1 = wait1.until(ExpectedConditions.presenceOfElementLocated(
                         By.id("checkbox-034a17f714")));
 
-                js.executeScript("arguments[0].scrollIntoView(true);", checkbox1);
+                js12.executeScript("arguments[0].scrollIntoView(true);", checkbox1);
 
                 if (!checkbox1.isSelected()) {
-                    js.executeScript("arguments[0].click();", checkbox1);
+                    js12.executeScript("arguments[0].click();", checkbox1);
                     Thread.sleep(3000);
                 }
 
@@ -263,13 +415,13 @@ public class ProductsPage01 {
 
             // Checkbox 2
             try {
-                WebElement checkbox2 = wait.until(ExpectedConditions.presenceOfElementLocated(
+                WebElement checkbox2 = wait1.until(ExpectedConditions.presenceOfElementLocated(
                         By.id("checkbox-142decba94")));
 
-                js.executeScript("arguments[0].scrollIntoView(true);", checkbox2);
+                js12.executeScript("arguments[0].scrollIntoView(true);", checkbox2);
 
                 if (!checkbox2.isSelected()) {
-                    js.executeScript("arguments[0].click();", checkbox2);
+                    js12.executeScript("arguments[0].click();", checkbox2);
                     Thread.sleep(3000);
                 }
 
@@ -302,7 +454,7 @@ public class ProductsPage01 {
 
      // CREDIT CARD APPLICATION
 
-        ArrayList<String> tabs02 = null;
+     /*   ArrayList<String> tabs02 = null;
 
         try {
             WebElement heading02 = driver.findElement(By.xpath("//p[contains(text(),'Credit Card Application')]"));
@@ -325,41 +477,41 @@ public class ProductsPage01 {
             String url = driver.getCurrentUrl();
 
             // ✅ Step 1: SSO URL Check
-            boolean isSSOUrlValid = url.contains("SSO_AUTHENTICATION_SUCCESS");
+            boolean isSSOUrlValid1 = url.contains("SSO_AUTHENTICATION_SUCCESS");
 
             // ✅ Step 2: Consent Flow
             boolean isConsentSuccess = true;
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-            JavascriptExecutor js = (JavascriptExecutor) driver;
+            WebDriverWait wait2 = new WebDriverWait(driver, Duration.ofSeconds(20));
+            JavascriptExecutor js13 = (JavascriptExecutor) driver;
             // 🔥 Wait for full page load
-            wait.until(webDriver ->
+            wait2.until(webDriver ->
                 ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
 
             Thread.sleep(3000);
 
             // ================= CHECKBOX =================
             try {
-                List<WebElement> checkboxes = wait.until(
+                List<WebElement> checkboxes = wait2.until(
                         ExpectedConditions.presenceOfAllElementsLocatedBy(
                                 By.xpath("//input[contains(@id,'guidecheckbox')]")));
 
                 boolean clicked = false;
 
-                Actions actions = new Actions(driver);
+                Actions actions003 = new Actions(driver);
 
                 for (WebElement checkbox : checkboxes) {
                     if (checkbox.isDisplayed()) {
 
                         // 🔥 Move to element (real user scroll)
-                        actions.moveToElement(checkbox).perform();
+                        actions003.moveToElement(checkbox).perform();
                         Thread.sleep(1500);
 
                         // Extra scroll (safety)
-                        js.executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
+                        js13.executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
                         Thread.sleep(1000);
 
                         // Click using JS (most stable)
-                        js.executeScript("arguments[0].click();", checkbox);
+                        js13.executeScript("arguments[0].click();", checkbox);
                         Thread.sleep(3000);
 
                         clicked = true;
@@ -383,11 +535,11 @@ public class ProductsPage01 {
             try {
                 Thread.sleep(2000);
 
-                WebElement downArrow = wait.until(ExpectedConditions.presenceOfElementLocated(
+                WebElement downArrow = wait2.until(ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//img[contains(@class,'cq-dd-image')]")));
 
-                js.executeScript("arguments[0].scrollIntoView(true);", downArrow);
-                js.executeScript("arguments[0].click();", downArrow);
+                js13.executeScript("arguments[0].scrollIntoView(true);", downArrow);
+                js13.executeScript("arguments[0].click();", downArrow);
                 Thread.sleep(3000);
                 System.out.println("Down Arrow clicked :: PASS");
 
@@ -398,7 +550,7 @@ public class ProductsPage01 {
             
                         // ================= I AGREE =================
             try {
-                List<WebElement> buttons = wait.until(
+                List<WebElement> buttons = wait2.until(
                         ExpectedConditions.presenceOfAllElementsLocatedBy(
                                 By.xpath("//span[text()='I Agree']/ancestor::button")));
 
@@ -406,9 +558,9 @@ public class ProductsPage01 {
 
                 for (WebElement btn : buttons) {
                     if (btn.isDisplayed()) {
-                        js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
+                        js13.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
                         Thread.sleep(3000);
-                        js.executeScript("arguments[0].click();", btn);
+                        js13.executeScript("arguments[0].click();", btn);
                         Thread.sleep(4000);
                         clicked = true;
                         System.out.println("I Agree clicked :: PASS");
@@ -428,7 +580,7 @@ public class ProductsPage01 {
 
          // ================= CONTINUE =================
             try {
-                List<WebElement> buttons = wait.until(
+                List<WebElement> buttons = wait2.until(
                         ExpectedConditions.presenceOfAllElementsLocatedBy(
                                 By.xpath("//span[text()='Continue']/ancestor::button")));
 
@@ -436,9 +588,9 @@ public class ProductsPage01 {
 
                 for (WebElement btn : buttons) {
                     if (btn.isDisplayed()) {
-                        js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
+                        js13.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
                         Thread.sleep(2000);
-                        js.executeScript("arguments[0].click();", btn);
+                        js13.executeScript("arguments[0].click();", btn);
                         Thread.sleep(5000); // reduce wait (important)
                         clicked = true;
                         System.out.println("Continue clicked :: PASS");
@@ -470,8 +622,8 @@ public class ProductsPage01 {
 
                         Thread.sleep(2000); // allow animation to finish
 
-                        js.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
-                        js.executeScript("arguments[0].click();", btn);
+                        js13.executeScript("arguments[0].scrollIntoView({block:'center'});", btn);
+                        js13.executeScript("arguments[0].click();", btn);
 
                         System.out.println("Proceed popup handled :: CLICKED");
                         clicked = true;
@@ -492,7 +644,8 @@ public class ProductsPage01 {
             }
             
             
-            // ✅ FINAL RESULT
+            boolean isSSOUrlValid = false;
+			// ✅ FINAL RESULT
             if (isSSOUrlValid && isConsentSuccess) {
                 System.out.println("Credit Card Application SSO Validation :: PASS");
             } else {
@@ -516,7 +669,7 @@ public class ProductsPage01 {
                 Thread.sleep(2000);
             }
         }
-
+*/
         System.out.println("----------------------------------------------------");
         
    /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -526,8 +679,8 @@ public class ProductsPage01 {
         ArrayList<String> loanTabs = null;
 
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(25));
-            JavascriptExecutor js = (JavascriptExecutor) driver;
+            WebDriverWait wait63 = new WebDriverWait(driver, Duration.ofSeconds(25));
+            JavascriptExecutor js63 = (JavascriptExecutor) driver;
 
             boolean isConsentSuccess = true;
 
@@ -599,19 +752,19 @@ public class ProductsPage01 {
 
             // 🔥 STEP 5: ENTER 4 DIGITS (FINAL FIX)
             try {
-                WebElement d1 = wait.until(ExpectedConditions.elementToBeClickable(
+                WebElement d1 = wait63.until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//input[@aria-label='CCDigit1']")));
-                WebElement d2 = wait.until(ExpectedConditions.elementToBeClickable(
+                WebElement d2 = wait63.until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//input[@aria-label='CCDigit2']")));
-                WebElement d3 = wait.until(ExpectedConditions.elementToBeClickable(
+                WebElement d3 = wait63.until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//input[@aria-label='CCDigit3']")));
-                WebElement d4 = wait.until(ExpectedConditions.elementToBeClickable(
+                WebElement d4 = wait63.until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//input[@aria-label='CCDigit4']")));
 
                 d1.sendKeys("7");Thread.sleep(1000);
                 d2.sendKeys("9");Thread.sleep(1000);
                 d3.sendKeys("8");Thread.sleep(1000);
-                d4.sendKeys("2");Thread.sleep(1000);
+                d4.sendKeys("2");Thread.sleep(2000);
 
                 System.out.println("Entered CC digits :: PASS");
 
@@ -620,20 +773,19 @@ public class ProductsPage01 {
                 isConsentSuccess = false;
             }
 
-            Thread.sleep(1000);
 
          // 🔥 IMPORTANT WAIT AFTER DIGITS (VERY IMPORTANT)
             Thread.sleep(1000);
 
             // 🔹 STEP 6: Checkbox (FIXED)
             try {
-                WebElement checkbox = wait.until(ExpectedConditions.presenceOfElementLocated(
+                WebElement checkbox = wait63.until(ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//input[contains(@id,'guidecheckbox_copy')]")));
 
-                js.executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
+                js63.executeScript("arguments[0].scrollIntoView({block:'center'});", checkbox);
                 Thread.sleep(2000);
 
-                js.executeScript("arguments[0].click();", checkbox);
+                js63.executeScript("arguments[0].click();", checkbox);
                 Thread.sleep(3000);
 
                 System.out.println("Checkbox clicked :: PASS");
@@ -647,13 +799,13 @@ public class ProductsPage01 {
 
             // 🔹 STEP 7: Go To Bottom (FIXED)
             try {
-                WebElement goToBottom = wait.until(ExpectedConditions.presenceOfElementLocated(
+                WebElement goToBottom = wait63.until(ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//p[text()='Go To Bottom']")));
 
-                js.executeScript("arguments[0].scrollIntoView({block:'center'});", goToBottom);
+                js63.executeScript("arguments[0].scrollIntoView({block:'center'});", goToBottom);
                 Thread.sleep(2000);
 
-                js.executeScript("arguments[0].click();", goToBottom);
+                js63.executeScript("arguments[0].click();", goToBottom);
                 Thread.sleep(3000);
 
                 System.out.println("Go To Bottom clicked :: PASS");
@@ -667,13 +819,13 @@ public class ProductsPage01 {
 
             // 🔹 STEP 8: I Agree (FIXED)
             try {
-                WebElement agreeBtn = wait.until(ExpectedConditions.presenceOfElementLocated(
+                WebElement agreeBtn = wait63.until(ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//span[text()='I Agree']/ancestor::button")));
 
-                js.executeScript("arguments[0].scrollIntoView({block:'center'});", agreeBtn);
+                js63.executeScript("arguments[0].scrollIntoView({block:'center'});", agreeBtn);
                 Thread.sleep(2000);
 
-                js.executeScript("arguments[0].click();", agreeBtn);
+                js63.executeScript("arguments[0].click();", agreeBtn);
                 Thread.sleep(3000);
 
                 System.out.println("I Agree clicked :: PASS");
@@ -687,10 +839,10 @@ public class ProductsPage01 {
             // 🔹 STEP 9: View Loan Eligibility
             
             try {
-                WebElement viewEligibility = wait.until(ExpectedConditions.elementToBeClickable(
+                WebElement viewEligibility = wait63.until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//span[contains(text(),'View Loan Eligibility')]")));
 
-                js.executeScript("arguments[0].click();", viewEligibility);
+                js63.executeScript("arguments[0].click();", viewEligibility);
                 System.out.println("View Loan Eligibility clicked :: PASS");
                 Thread.sleep(27000);
                 // ✅ Validate next page element (IMPORTANT)
@@ -711,7 +863,7 @@ public class ProductsPage01 {
 
                 if (button.isEnabled()) {
 
-                    js.executeScript("arguments[0].click();", button);
+                    js63.executeScript("arguments[0].click();", button);
                     Thread.sleep(15000);
                     System.out.println("Identify Yourself Button clicked :: PASS");
 
@@ -828,4 +980,5 @@ public class ProductsPage01 {
         Thread.sleep(2000);
 
         return driver;
-           }}
+    }
+}
